@@ -1,9 +1,9 @@
 {
-  "name": "tanstack-start-template",
+  "name": "color-test",
   "type": "module",
   "version": "1.0.0",
   "packageManager": "pnpm@10.15.0",
-  "description": "TanStack Start Starter",
+  "description": "Explore code mode",
   "author": "",
   "license": "MIT",
   "keywords": [],
@@ -17,10 +17,13 @@
     "@tailwindcss/vite": "^4.1.12",
     "@tanstack/react-router": "^1.131.27",
     "@tanstack/react-start": "^1.131.27",
+    "culori": "^4.0.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "tailwindcss": "^4.1.12",
-    "vite": "^7.1.3"
+    "vite": "^7.1.3",
+    "zod": "^4.1.1",
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^5.2.1",
