@@ -1,8 +1,9 @@
 import { useMemo, useState } from 'react'
-import { useComputedScales } from '../store'
+import toast from 'react-hot-toast'
+import { useComputedScales } from '../store/selectors'
+import type { OklchColor } from '../store/state'
 
 // --- Types ---
-interface OklchColor { l: number, c: number, h: number }
 type ColorScale = Record<string, OklchColor>
 
 function formatCss(scales: { name: string, scale: ColorScale }[]) {
@@ -50,6 +51,7 @@ function formatTailwind(scales: { name: string, scale: ColorScale }[]) {
 export function CodeExport() {
   const allScales = useComputedScales()
   const [format, setFormat] = useState('css')
+  const [isCopied, setIsCopied] = useState(false)
 
   const code = useMemo(() => {
     if (format === 'css')
@@ -62,7 +64,13 @@ export function CodeExport() {
   }, [allScales, format])
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(code)
+    navigator.clipboard.writeText(code).then(() => {
+      toast.success('Copied to clipboard!')
+      setIsCopied(true)
+      setTimeout(() => setIsCopied(false), 2000)
+    }).catch(() => {
+      toast.error('Failed to copy!')
+    })
   }
 
   return (
@@ -75,7 +83,9 @@ export function CodeExport() {
       <pre className="p-4 rounded-md bg-app-bg border border-border-secondary text-xs text-text-secondary overflow-auto h-64">
         {code}
       </pre>
-      <button type="button" onClick={copyToClipboard} className="absolute top-10 right-3 p-1 text-xs rounded-md bg-border-primary hover:bg-border-secondary">Copy</button>
+      <button type="button" onClick={copyToClipboard} disabled={isCopied} className="absolute top-10 right-3 p-1 text-xs rounded-md bg-border-primary hover:bg-border-secondary disabled:bg-accent disabled:text-white">
+        {isCopied ? 'Copied!' : 'Copy'}
+      </button>
     </div>
   )
 }

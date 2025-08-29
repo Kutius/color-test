@@ -1,8 +1,9 @@
 import { useMemo } from 'react'
-import { useComputedScales, useStore } from '../store'
+import { useStore } from '../store'
+import { useComputedScales } from '../store/selectors'
+import type { OklchColor } from '../store/state'
 
 // --- Types ---
-interface OklchColor { l: number, c: number, h: number }
 type ColorScale = Record<string, OklchColor>
 
 export function UIPreview() {

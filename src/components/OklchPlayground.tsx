@@ -1,11 +1,12 @@
 import { formatHex } from 'culori'
 import { useMemo, useState } from 'react'
-import { useComputedScales, useStore } from '../store'
+import { useStore } from '../store'
+import { useComputedScales } from '../store/selectors'
 import { CodeExport } from './CodeExport'
 import { UIPreview } from './UIPreview'
 
 export function OklchPlayground() {
-  const { activeId, hues, globalChroma, actions } = useStore()
+  const { activeId, hues, actions } = useStore()
   const allScales = useComputedScales()
   const [activeTab, setActiveTab] = useState('preview')
 
@@ -29,7 +30,7 @@ export function OklchPlayground() {
             </button>
           ))}
         </div>
-        <div className="card p-4 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
+        <div className="card p-4 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
           <div>
             <label htmlFor="h" className="flex justify-between text-xs font-medium text-text-secondary">
               <span>
@@ -39,12 +40,13 @@ export function OklchPlayground() {
             </label>
             <input id="h" type="range" min="0" max="360" step="1" value={activeHue.h} onChange={e => actions.setHueValue(Number.parseFloat(e.target.value))} />
           </div>
+
           <div>
-            <label htmlFor="c" className="flex justify-between text-xs font-medium text-text-secondary">
-              <span>Global Chroma</span>
-              <span>{globalChroma.toFixed(3)}</span>
+            <label htmlFor="hue-c" className="flex justify-between text-xs font-medium text-text-secondary">
+              <span>{`${activeHue.name} Chroma`}</span>
+              <span>{activeHue.c.toFixed(3)}</span>
             </label>
-            <input id="c" type="range" min="0" max="0.2" step="0.005" value={globalChroma} onChange={e => actions.setGlobalChroma(Number.parseFloat(e.target.value))} />
+            <input id="hue-c" type="range" min="0" max="0.2" step="0.005" value={activeHue.c} onChange={e => actions.setHueChroma(Number.parseFloat(e.target.value))} />
           </div>
         </div>
       </section>

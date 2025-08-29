@@ -22,7 +22,7 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Start Starter',
+        title: 'OKLCH Color Lab',
       },
     ],
     links: [
@@ -40,6 +40,8 @@ function RootComponent() {
   )
 }
 
+import { Toaster } from 'react-hot-toast'
+
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html>
@@ -52,6 +54,15 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
           {children}
         </div>
         <Footer />
+        <Toaster
+          position="bottom-center"
+          toastOptions={{
+            style: {
+              background: '#333',
+              color: '#fff',
+            },
+          }}
+        />
         <Scripts />
       </body>
     </html>
