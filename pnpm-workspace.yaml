@@ -1,0 +1,7 @@
+ignoredBuiltDependencies:
+  - '@parcel/watcher'
+  - esbuild
+
+onlyBuiltDependencies:
+  - '@tailwindcss/oxide'
+  - simple-git-hooks
