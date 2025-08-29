@@ -13,45 +13,49 @@ export function OklchPlayground() {
   const activeScale = useMemo(() => allScales.find(s => s.name === activeHue.name)!.scale, [allScales, activeHue])
 
   return (
-    <>
-      <div className="space-y-10">
-        {/* --- Top Controls --- */}
-        <header className="space-y-4">
-          <div className="flex items-center gap-2 flex-wrap">
-            {hues.map(hue => (
-              <button
-                key={hue.id}
-                type="button"
-                onClick={() => actions.setActiveHueId(hue.id)}
-                className={`px-3 py-1.5 rounded-md font-semibold transition-colors text-sm ${activeId === hue.id ? 'bg-accent text-white' : 'bg-app-bg-inset text-text-secondary hover:bg-border-primary'}`}
-              >
-                {hue.name}
-              </button>
-            ))}
+    <div className="space-y-8">
+      {/* --- Controls --- */}
+      <section className="space-y-4">
+        <h2 className="text-lg font-bold text-text-primary">Controls</h2>
+        <div className="flex items-center gap-2 flex-wrap">
+          {hues.map(hue => (
+            <button
+              key={hue.id}
+              type="button"
+              onClick={() => actions.setActiveHueId(hue.id)}
+              className={`px-3 py-1.5 rounded-md font-semibold transition-colors text-sm ${activeId === hue.id ? 'bg-accent text-white' : 'bg-app-bg-inset text-text-secondary hover:bg-border-primary'}`}
+            >
+              {hue.name}
+            </button>
+          ))}
+        </div>
+        <div className="card p-4 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
+          <div>
+            <label htmlFor="h" className="flex justify-between text-xs font-medium text-text-secondary">
+              <span>
+                {`${activeHue.name} Hue`}
+              </span>
+              <span>{activeHue.h.toFixed(0)}</span>
+            </label>
+            <input id="h" type="range" min="0" max="360" step="1" value={activeHue.h} onChange={e => actions.setHueValue(Number.parseFloat(e.target.value))} />
           </div>
-          <div className="card p-4 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-            <div>
-              <label htmlFor="h" className="flex justify-between text-xs font-medium text-text-secondary">
-                <span>
-                  {`${activeHue.name} Hue`}
-                </span>
-                <span>{activeHue.h.toFixed(0)}</span>
-              </label>
-              <input id="h" type="range" min="0" max="360" step="1" value={activeHue.h} onChange={e => actions.setHueValue(Number.parseFloat(e.target.value))} />
-            </div>
-            <div>
-              <label htmlFor="c" className="flex justify-between text-xs font-medium text-text-secondary">
-                <span>Global Chroma</span>
-                <span>{globalChroma.toFixed(3)}</span>
-              </label>
-              <input id="c" type="range" min="0" max="0.2" step="0.005" value={globalChroma} onChange={e => actions.setGlobalChroma(Number.parseFloat(e.target.value))} />
-            </div>
+          <div>
+            <label htmlFor="c" className="flex justify-between text-xs font-medium text-text-secondary">
+              <span>Global Chroma</span>
+              <span>{globalChroma.toFixed(3)}</span>
+            </label>
+            <input id="c" type="range" min="0" max="0.2" step="0.005" value={globalChroma} onChange={e => actions.setGlobalChroma(Number.parseFloat(e.target.value))} />
           </div>
-        </header>
+        </div>
+      </section>
 
-        {/* --- Color Scale Display --- */}
-        <main>
-          <div className="grid grid-cols-10 gap-x-2 gap-y-4">
+      {/* --- Color Scale Display --- */}
+      <section className="space-y-4">
+        <h2 className="text-lg font-bold text-text-primary">
+          {`Scale: ${activeHue.name}`}
+        </h2>
+        <div className="card p-4">
+          <div className="grid grid-cols-5 md:grid-cols-10 gap-x-2 gap-y-4">
             {Object.entries(activeScale).map(([key, color]) => {
               const colorStr = `oklch(${color.l} ${color.c} ${color.h})`
               return (
@@ -63,11 +67,14 @@ export function OklchPlayground() {
               )
             })}
           </div>
-        </main>
+        </div>
+      </section>
 
-        {/* --- Workbench Area --- */}
-        <section className="mt-12">
-          <div className="flex border-b border-border-primary mb-4">
+      {/* --- Workbench Area --- */}
+      <section className="space-y-4">
+        <h2 className="text-lg font-bold text-text-primary">Workbench</h2>
+        <div className="card">
+          <div className="flex border-b border-border-primary">
             <button
               type="button"
               onClick={() => setActiveTab('preview')}
@@ -83,12 +90,12 @@ export function OklchPlayground() {
               Export
             </button>
           </div>
-          <div className="card p-6">
+          <div className="p-6">
             {activeTab === 'preview' && <UIPreview />}
             {activeTab === 'export' && <CodeExport />}
           </div>
-        </section>
-      </div>
-    </>
+        </div>
+      </section>
+    </div>
   )
 }

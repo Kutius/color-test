@@ -7,10 +7,13 @@ export function Header() {
         <Link to="/" className="text-lg font-bold text-text-primary hover:text-accent transition-colors">
           OKLCH Color Lab
         </Link>
-        <nav className="flex gap-4">
-          <Link to="/" className="text-sm text-text-secondary hover:text-text-primary transition-colors" activeProps={{className: '!text-text-primary font-semibold'}}>Lab</Link>
-          <Link to="/about" className="text-sm text-text-secondary hover:text-text-primary transition-colors" activeProps={{className: '!text-text-primary font-semibold'}}>About</Link>
-        </nav>
+        <div className="flex items-center gap-6">
+          <nav className="flex gap-4">
+            <Link to="/" className="text-sm text-text-secondary hover:text-text-primary transition-colors" activeProps={{ className: '!text-text-primary font-semibold' }}>Lab</Link>
+            <Link to="/about" className="text-sm text-text-secondary hover:text-text-primary transition-colors" activeProps={{ className: '!text-text-primary font-semibold' }}>About</Link>
+            <a href="https://github.com/kutius/color-test" target="_blank" rel="noopener noreferrer" className="text-sm text-text-secondary hover:text-text-primary transition-colors">Github</a>
+          </nav>
+        </div>
       </div>
     </header>
   )
