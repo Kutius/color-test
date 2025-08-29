@@ -1,9 +1,12 @@
-import { formatHex } from 'culori'
+import { formatHex, inGamut } from 'culori'
 import { useMemo, useState } from 'react'
 import { useStore } from '../store'
 import { useComputedScales } from '../store/selectors'
 import { CodeExport } from './CodeExport'
 import { UIPreview } from './UIPreview'
+
+const checkSrgb = inGamut('rgb')
+const checkP3 = inGamut('p3')
 
 export function OklchPlayground() {
   const { activeId, hues, actions } = useStore()
@@ -60,9 +63,37 @@ export function OklchPlayground() {
           <div className="grid grid-cols-5 md:grid-cols-10 gap-x-2 gap-y-4">
             {Object.entries(activeScale).map(([key, color]) => {
               const colorStr = `oklch(${color.l} ${color.c} ${color.h})`
+              const isSrgb = checkSrgb({ ...color, mode: 'oklch' })
+              const isP3 = checkP3({ ...color, mode: 'oklch' })
+
+              let gamutIndicator: React.ReactNode | null = null
+              if (!isSrgb && isP3) {
+                gamutIndicator = (
+                  <div
+                    className="absolute top-1 right-1 w-3 h-3 bg-blue-500 rounded-full border-2 border-app-bg-inset"
+                    title="In P3 gamut, but outside sRGB"
+                  />
+                )
+              }
+              else if (!isP3) {
+                gamutIndicator = (
+                  <div
+                    className="absolute top-1 right-1 w-4 h-4 bg-yellow-500 rounded-full flex items-center justify-center text-black text-xs font-bold"
+                    title="Outside sRGB and P3 gamut"
+                  >
+                    !
+                  </div>
+                )
+              }
+
               return (
                 <div key={key} className="space-y-1.5 text-center">
-                  <div className="w-full h-20 rounded-md border border-border-primary" style={{ backgroundColor: colorStr }} />
+                  <div
+                    className="relative w-full h-20 rounded-md border border-border-primary"
+                    style={{ backgroundColor: colorStr }}
+                  >
+                    {gamutIndicator}
+                  </div>
                   <div className="text-xs font-bold text-text-primary">{key}</div>
                   <div className="text-xs text-text-secondary font-mono">{formatHex(colorStr)}</div>
                 </div>
